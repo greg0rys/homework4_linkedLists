@@ -52,30 +52,29 @@ list::~list(){
 }
 
 // helper to call the private method
-void list::insert(word &word)
+void list::insert(word &aWord)
 {
-    insertNode(head, word);
+    insertNode(aWord);
 }
 
 // maintain a sorted linked list
-void list::insertNode(node *&head,  word &word){
+void list::insertNode( word &aWord){
 
     node * newNode = nullptr;
     node * prevNode = nullptr;
     node * curr = head;
     char * headWord = nullptr;
-    char * paramWord = nullptr;
+    char * paramWord = new char[aWord.GetWordLength() + 1];
 
     if(head == nullptr)
     {
         cout << "First word! " << endl;
-        newNode = new node();
-        newNode->data = &word;
+        newNode = new node(aWord);
         head = newNode;
-        head->next = nullptr;
     }
     else
     {
+
 
         while(curr)
         {
@@ -89,17 +88,7 @@ void list::insertNode(node *&head,  word &word){
                 headWord = new char[curr->data->GetWordLength() + 1];
                 curr->data->GetData(headWord);
             }
-            if(paramWord != nullptr)
-            {
-                delete []paramWord;
-                paramWord = new char[word.GetWordLength() + 1];
-                word.GetData(paramWord);
-            }
-            else
-            {
-                paramWord = new char[word.GetWordLength() + 1];
-                word.GetData(paramWord);
-            }
+
 
             if(strcmp(headWord, paramWord) == 0)
             {
@@ -110,7 +99,7 @@ void list::insertNode(node *&head,  word &word){
                 return; // word is a duplicate do nothing.
             }
 
-            if(curr->data->GetWordLength() == word.GetWordLength())
+            if(curr->data->GetWordLength() == aWord.GetWordLength())
             {
                 if(strcmp(headWord, paramWord) > 0)
                 {
@@ -118,7 +107,7 @@ void list::insertNode(node *&head,  word &word){
                 }
             }
 
-            if(curr->data->GetWordLength() > word.GetWordLength())
+            if(curr->data->GetWordLength() > aWord.GetWordLength())
             {
                 break;
             }
@@ -130,16 +119,14 @@ void list::insertNode(node *&head,  word &word){
         // insert at front of the list?
         if(curr == head)
         {
-            newNode = new node();
-            newNode->data = &word;
+            newNode = new node(aWord);
             newNode->next = head;
             head = newNode;
         }
         // inserting else where in the list
         else
         {
-            newNode = new node();
-            newNode->data = &word;
+            newNode = new node(aWord);
             newNode->next = curr;
             prevNode->next = newNode;
         }
@@ -171,29 +158,10 @@ int list::getSize() const {
 void list::printList()
 {
     node * curr;
-    char * wordData = nullptr;
     for(curr = head; curr; curr=curr->next)
     {
-        if(wordData != nullptr)
-        {
-            delete []wordData;
-            wordData = new char[curr->data->GetWordLength() + 1];
-            curr->data->GetData(wordData);
 
-        }
-        else
-        {
-            wordData = new char[curr->data->GetWordLength() + 1];
-            curr->data->GetData(wordData);
-
-        }
-
-        cout << wordData << endl;
-        cout << curr->data->GetCount() << endl;
+        curr->data->printData();
     }
 
-    if(wordData)
-    {
-        delete []wordData;
-    }
 }

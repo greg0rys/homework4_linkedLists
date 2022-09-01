@@ -3,7 +3,7 @@
 int main() {
 
     ifstream file;
-    list  wordList;
+    list wordList;
     openFile(file, wordList);
     wordList.printList();
 
@@ -19,7 +19,7 @@ void openFile(ifstream &file, list & master) {
     cout << "enter a filename: > ";
 
     // loop through the cin stream and grab each letter.
-    while(cin.good())
+    while(cin.good() && cin.peek() != EOF)
     {
         char letter = cin.get();
         // if the letter we get from the stream is a newline then break from this loop as that is end of user input
@@ -65,6 +65,7 @@ void openFile(ifstream &file, list & master) {
         cout << endl;
         readFile(file,master);
         cout << "[ " << filename << " ] has " << master.getSize() << " words" << endl;
+        master.printList();
 
 
     }
@@ -75,7 +76,6 @@ void openFile(ifstream &file, list & master) {
 
 void readFile(ifstream &file, list & index) {
     char * buffer = nullptr;
-    word tempWord;
 
     while(file.good() && !file.eof())
     {
@@ -87,7 +87,7 @@ void readFile(ifstream &file, list & index) {
                 continue;
             }
 
-            tempWord.SetData(buffer);
+            word tempWord(buffer);
             index.insert(tempWord);
             delete []buffer;
             buffer = nullptr;
@@ -112,7 +112,8 @@ void readFile(ifstream &file, list & index) {
         }
     }
     if (buffer != nullptr) {
-        tempWord.SetData(buffer);
+        word tempWord(buffer);
+        tempWord.printData();
         index.insert(tempWord);
         delete []buffer;
     }

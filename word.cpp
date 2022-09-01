@@ -112,3 +112,8 @@ int word::GetCount() const {
 void word::SetCount(const int newCount) {
     count = newCount;
 }
+
+void word::printData() {
+
+    cout << data << endl;
+}
