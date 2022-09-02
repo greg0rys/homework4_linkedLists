@@ -65,7 +65,6 @@ void openFile(ifstream &file, list & master) {
         cout << endl;
         readFile(file,master);
         cout << "[ " << filename << " ] has " << master.getSize() << " words" << endl;
-        master.printList();
 
 
     }
@@ -76,6 +75,7 @@ void openFile(ifstream &file, list & master) {
 
 void readFile(ifstream &file, list & index) {
     char * buffer = nullptr;
+    word tempWord;
 
     while(file.good() && !file.eof())
     {
@@ -87,8 +87,8 @@ void readFile(ifstream &file, list & index) {
                 continue;
             }
 
-            word tempWord(buffer);
-            index.insert(tempWord);
+            tempWord.SetData(buffer);
+            index.insertNode(tempWord);
             delete []buffer;
             buffer = nullptr;
             continue;
@@ -112,9 +112,8 @@ void readFile(ifstream &file, list & index) {
         }
     }
     if (buffer != nullptr) {
-        word tempWord(buffer);
-        tempWord.printData();
-        index.insert(tempWord);
+        tempWord.SetData(buffer);
+        index.insertNode(tempWord);
         delete []buffer;
     }
 

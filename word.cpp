@@ -25,9 +25,9 @@ word::word() {
 
 word::word(const char * datum)
 {
-    this->data = new char[strlen(datum) + 1];
+    data = new char[strlen(datum) + 1];
     strcpy(this->data, datum);
-    this->count = 1;
+    count = 1;
 }
 
 //destructor
@@ -54,22 +54,21 @@ word & word::operator=(const word &source) {
         return *this;
     }
 
+
     if(data)
     {
         delete []data;
-
     }
 
     if(source.data != nullptr)
     {
-        this->data = new char[strlen(source.data) + 1];
-        strcpy(this->data, source.data);
-
+        SetData(source.data);
     }
     else
     {
         data = nullptr;
     }
+
     this->count = source.count;
 
     return *this;

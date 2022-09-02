@@ -51,11 +51,6 @@ list::~list(){
     cout << "List destructed " << endl;
 }
 
-// helper to call the private method
-void list::insert(word &aWord)
-{
-    insertNode(aWord);
-}
 
 // maintain a sorted linked list
 void list::insertNode( word &aWord){
@@ -65,11 +60,15 @@ void list::insertNode( word &aWord){
     node * curr = head;
     char * headWord = nullptr;
     char * paramWord = new char[aWord.GetWordLength() + 1];
+    aWord.GetData(paramWord);
+    word tempWord(paramWord);
+    tempWord.GetData(paramWord);
+    cout << paramWord << endl;
 
-    if(head == nullptr)
+    if(curr == nullptr)
     {
         cout << "First word! " << endl;
-        newNode = new node(aWord);
+        newNode = new node(tempWord);
         head = newNode;
     }
     else
@@ -119,14 +118,14 @@ void list::insertNode( word &aWord){
         // insert at front of the list?
         if(curr == head)
         {
-            newNode = new node(aWord);
+            newNode = new node(tempWord);
             newNode->next = head;
             head = newNode;
         }
         // inserting else where in the list
         else
         {
-            newNode = new node(aWord);
+            newNode = new node(tempWord);
             newNode->next = curr;
             prevNode->next = newNode;
         }
@@ -157,11 +156,28 @@ int list::getSize() const {
 
 void list::printList()
 {
-    node * curr;
-    for(curr = head; curr; curr=curr->next)
+    node * curr = head;
+    char * wording = nullptr;
+    while(curr)
     {
+        if(wording)
+        {
+            delete []wording;
+            wording = new char[curr->data->GetWordLength() + 1];
+        }
+        else
+        {
+            wording = new char[curr->data->GetWordLength() + 1];
+        }
+        curr->data->GetData(wording);
+        cout << wording << " Count: " << curr->data->GetCount() << endl;
+        curr = curr->next;
+    }
 
-        curr->data->printData();
+    if(wording)
+    {
+        delete []wording;
+        wording = nullptr;
     }
 
 }
