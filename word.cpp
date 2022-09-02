@@ -20,7 +20,7 @@ using namespace std;
 //default constructor
 word::word() {
     data = nullptr; // right sized array so this must start as nullptr.
-    count = 0;
+    count = 1;
 }
 
 word::word(const char * datum)
@@ -60,6 +60,7 @@ word & word::operator=(const word &source) {
         delete []data;
     }
 
+    // check to make sure that the sources data member isn't a null pointer, we cannot operate on a nullptr.
     if(source.data != nullptr)
     {
         SetData(source.data);
@@ -112,7 +113,3 @@ void word::SetCount(const int newCount) {
     count = newCount;
 }
 
-void word::printData() {
-
-    cout << data << endl;
-}

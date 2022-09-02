@@ -1,15 +1,16 @@
 #include "main.h"
 
 int main() {
-
-    ifstream file;
-    list wordList;
-    openFile(file, wordList);
-    wordList.printList();
-
     cout << "Welcome to the Word Counter program! " << endl;
     cout.width(25);
     cout << "I hope you find this useful!" << endl;
+
+    ifstream file;
+    list wordList;
+
+    openFile(file, wordList);
+    wordList.printList();
+
     return 0;
 }
 

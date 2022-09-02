@@ -3,13 +3,13 @@
 // default constructor
 list::list()
 {
-    head = nullptr;
+    index = nullptr;
     size = 0;
 }
 
 //copy constructor
 list::list(const list &master){
-    head = nullptr;
+    index = nullptr;
     *this = master;
 }
 
@@ -19,18 +19,18 @@ list & list::operator=(const list &master){
         return *this;
     }
 
-    if(head)
+    if(index)
     {
-        delete head;
+        delete index;
     }
 
-    if(master.head)
+    if(master.index)
     {
-        head = master.head;
+        index = master.index;
     }
     else
     {
-        head = nullptr;
+        index = nullptr;
     }
     size = master.size;
 
@@ -40,15 +40,14 @@ list & list::operator=(const list &master){
 // list destructor
 list::~list(){
 
-    node * curr = head;
+    node * curr = index;
     while(curr)
     {
-        head = curr->next;
+        index = curr->next;
         delete curr;
-        curr = head;
+        curr = index;
     }
 
-    cout << "List destructed " << endl;
 }
 
 
@@ -57,26 +56,25 @@ void list::insertNode( word &aWord){
 
     node * newNode = nullptr;
     node * prevNode = nullptr;
-    node * curr = head;
+    node * curr = index;
     char * headWord = nullptr;
     char * paramWord = new char[aWord.GetWordLength() + 1];
     aWord.GetData(paramWord);
-    word tempWord(paramWord);
-    tempWord.GetData(paramWord);
-    cout << paramWord << endl;
 
+    // case 1 - inserting into an empty list.
     if(curr == nullptr)
     {
-        cout << "First word! " << endl;
-        newNode = new node(tempWord);
-        head = newNode;
+        newNode = new node(aWord);
+        index = newNode;
     }
     else
     {
 
+        // case 2 inserting into an already occupied list.
 
         while(curr)
         {
+            // allocate data for the index of the list word and get the word each iteration
             if(headWord != nullptr){
                 delete []headWord;
                 headWord = new char[curr->data->GetWordLength() + 1];
@@ -89,43 +87,52 @@ void list::insertNode( word &aWord){
             }
 
 
+            // case 3 - the words are the same, don't add anything to the list.
             if(strcmp(headWord, paramWord) == 0)
             {
                 // if the words are the same increase the count by 1.
                 curr->data->IncrementCount();
+                // since we will return from this function delete the char pointers
+                // as we will never reach the end for the deletion statements.
                 delete []headWord;
                 delete []paramWord;
                 return; // word is a duplicate do nothing.
             }
 
-            if(curr->data->GetWordLength() == aWord.GetWordLength())
+            if(strlen(headWord) < strlen(paramWord))
             {
-                if(strcmp(headWord, paramWord) > 0)
+                if(strcmp(headWord,paramWord) < 0){
+                    break;
+
+                }
+            }
+
+            // case 4 - the words are the same length, insert them via ascii order
+            if(strlen(headWord) == strlen(paramWord))
+            {
+                if(strcmp(headWord, paramWord) < 0)
                 {
                     break;
                 }
             }
 
-            if(curr->data->GetWordLength() > aWord.GetWordLength())
-            {
-                break;
-            }
+
 
             prevNode = curr;
             curr = curr->next;
         }
 
         // insert at front of the list?
-        if(curr == head)
+        if(curr == index)
         {
-            newNode = new node(tempWord);
-            newNode->next = head;
-            head = newNode;
+            newNode = new node(aWord);
+            newNode->next = index;
+            index = newNode;
         }
         // inserting else where in the list
         else
         {
-            newNode = new node(tempWord);
+            newNode = new node(aWord);
             newNode->next = curr;
             prevNode->next = newNode;
         }
@@ -138,17 +145,11 @@ void list::insertNode( word &aWord){
     if(headWord){
         delete []headWord;
     }
-    if(paramWord){
-        delete []paramWord;
-    }
+    delete[]paramWord;
 
 
 }
 
-// delete items from the sorted list
-void list::deleteNode(node *&head, const word &word){
-
-}
 
 int list::getSize() const {
     return size;
@@ -156,28 +157,10 @@ int list::getSize() const {
 
 void list::printList()
 {
-    node * curr = head;
-    char * wording = nullptr;
-    while(curr)
-    {
-        if(wording)
-        {
-            delete []wording;
-            wording = new char[curr->data->GetWordLength() + 1];
-        }
-        else
-        {
-            wording = new char[curr->data->GetWordLength() + 1];
-        }
-        curr->data->GetData(wording);
-        cout << wording << " Count: " << curr->data->GetCount() << endl;
-        curr = curr->next;
-    }
+    node * curr;
 
-    if(wording)
+    for(curr = index; curr; curr = curr->next)
     {
-        delete []wording;
-        wording = nullptr;
+        curr->data->PrintData();
     }
-
 }

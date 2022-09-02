@@ -34,7 +34,6 @@ public:
     int GetWordLength() const;
     int GetCount() const;
     void SetCount(const int);
-    void printData();
 private:
     char * data;
     int count;
