@@ -99,18 +99,16 @@ void list::insertNode( word &aWord){
                 return; // word is a duplicate do nothing.
             }
 
-            if(strlen(headWord) < strlen(paramWord))
+			// if the words are different lengths, insert them in ascii order
+            if(strcmp(headWord,paramWord) > 0)
             {
-                if(strcmp(headWord,paramWord) < 0){
-                    break;
-
-                }
+                break;
             }
 
             // case 4 - the words are the same length, insert them via ascii order
             if(strlen(headWord) == strlen(paramWord))
             {
-                if(strcmp(headWord, paramWord) < 0)
+                if(strcmp(headWord, paramWord) > 0)
                 {
                     break;
                 }
@@ -145,7 +143,9 @@ void list::insertNode( word &aWord){
     if(headWord){
         delete []headWord;
     }
-    delete[]paramWord;
+	// we don't need to check that paramWord != nullptr, as it is always
+	// allocated at the start of this function.
+    delete[]paramWord; 
 
 
 }
