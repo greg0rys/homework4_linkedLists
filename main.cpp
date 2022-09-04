@@ -11,6 +11,7 @@ int main() {
     openFile(file, wordList);
     wordList.printList();
 
+	cout << "[ done ]" << endl;
     return 0;
 }
 
